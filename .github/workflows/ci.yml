@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build-ubuntu:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      # Grab The Source Code
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Configure Dotnet to push packages to GitHub Package Repo (GPR)
+      - name: Configure Dotnet SDK for GitHub Package Repo (GPR)
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: '3.1.x' # SDK Version to use.
+          source-url: https://nuget.pkg.github.com/${{github.repository_owner}}/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      # Build the Project
+      - name: Build Source
+        run: dotnet build --configuration Release
+
+      # Run the Tests
+      - name: Run Tests
+        run: dotnet test --configuration Release
+
+  build-windows:
+    runs-on: windows-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      # Grab The Source Code
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Configure Dotnet to push packages to GitHub Package Repo (GPR)
+      - name: Configure Dotnet SDK for GitHub Package Repo (GPR)
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: '3.1.x' # SDK Version to use.
+          source-url: https://nuget.pkg.github.com/${{github.repository_owner}}/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      # Build the Project
+      - name: Build Source
+        run: dotnet build --configuration Release
+
+      # Run the Tests
+      - name: Run Tests
+        run: dotnet test --configuration Release
