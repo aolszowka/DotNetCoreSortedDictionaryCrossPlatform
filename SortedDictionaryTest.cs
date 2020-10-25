@@ -32,5 +32,33 @@ namespace DotNetCoreSortedDictionaryCrossPlatform
 
             Assert.That(actual, Is.EqualTo(expected));
         }
+
+        /// <summary>
+        /// In trying to narrow down the problem it seems like it might be length dependent?!?
+        /// </summary>
+        [Test]
+        public void DifferenceBetweenPlatforms_LengthDependent_Theory()
+        {
+            SortedDictionary<string, int> sortedDictionary = new SortedDictionary<string, int>();
+
+            sortedDictionary.Add("Microsoft.CodeAnalysis.VisualBasic.CodeStyle.Fixes", 0);
+            sortedDictionary.Add("Microsoft.CodeAnalysis.VisualBasic", 0);
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var kvp in sortedDictionary)
+            {
+                sb.AppendLine(kvp.Key);
+            }
+
+            string actual = sb.ToString();
+
+            // This apparently works in both Windows and Ubuntu?
+            string expected =
+                "Microsoft.CodeAnalysis.VisualBasic" + Environment.NewLine +
+                "Microsoft.CodeAnalysis.VisualBasic.CodeStyle.Fixes" + Environment.NewLine;
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
     }
 }
