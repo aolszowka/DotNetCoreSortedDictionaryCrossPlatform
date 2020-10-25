@@ -41,3 +41,21 @@ jobs:
       # Run the Tests
       - name: Run Tests
         run: dotnet test --configuration Release
+
+  build-macos:
+    runs-on: macOS-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      # Grab The Source Code
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Build the Project
+      - name: Build Source
+        run: dotnet build --configuration Release
+
+      # Run the Tests
+      - name: Run Tests
+        run: dotnet test --configuration Release
